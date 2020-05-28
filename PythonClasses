@@ -1,0 +1,116 @@
+class ContaCorrente:
+    def __init__(self):
+        self.numero_da_conta = 0
+        self.nome_do_correntista = ''
+        self.saldo = 0
+        self.saldo_aleatorio = randint(self.saldo, 9999)
+#033[1;30m 033[m
+
+    def saque(self):
+        self.numero_da_conta = int(input('\033[1;30mDigite o número da conta:\033[m '))
+        while self.numero_da_conta > 999999:
+            print('\033[1;30mO número da sua conta não pode ter mais de 6 dígitos.\033[m')
+            self.saque()
+            if self.numero_da_conta < 999999:
+                break
+
+
+        print(f'\033[1;30mVocê possui um saldo de R${self.saldo_aleatorio}\033[m')
+        valor_a_ser_sacado = int(input('\033[1;30mQual valor você gostaria de sacar ?\033[m '))
+        if valor_a_ser_sacado > self.saldo_aleatorio:
+            print('\033[1;31mSaldo Insuficiente.\033[m')
+            self.saque()
+        elif valor_a_ser_sacado <= self.saldo_aleatorio:
+            print('\033[1;30mImprimindo as notas...\033[m')
+            sleep(3)
+            print(f'''\033[1;30mOk!, Você irá sacar R${valor_a_ser_sacado}\nficará com R${self.saldo_aleatorio - valor_a_ser_sacado} na sua conta.\033[m''')
+        operacao_extra_dentrodosaque = input('\033[1;30mGostaria de fazer alguma outra operação? [Depósito/N] \033[m').strip().upper()
+        if operacao_extra_dentrodosaque in 'N':
+            print('\033[1;30mObrigado por frequentar nosso banco!\!033[m')
+        elif operacao_extra_dentrodosaque in 'DEPOSITODEPÓSITO':
+            try:
+                self.nome_do_correntista = input('\033[1;30mDigite o nome do Correntista: \033[m')
+            except ValueError:
+                print('\033[1;30mDigite apenas números.\033[m')
+                self.nome_do_correntista = input('\033[1;30mDigite o nome do Correntista:\033[m ')
+
+            depositar = input(f'\033[1;30mConfirma o depósito em nome do {self.nome_do_correntista}? [S/N]\033[m').strip()
+            if depositar in 'Ss':
+                valor_a_ser_depositado = int(input('\033[1;30mDigite o valor a ser depositado: \033[m'))
+                self.numero_da_conta = int(input('\033[1;30mDigite o número da conta: \033[m'))
+                while self.numero_da_conta > 999999:
+                    print('\033[1;31mO número da sua conta não pode ter mais de 6 dígitos.\033[m')
+                    self.saque()
+                    if self.numero_da_conta < 999999:
+                        break
+
+
+                print(f'\033[1;30mVocê depositou o valor de R${valor_a_ser_depositado},\033[m'
+                      f'\033[1;30mficando com um saldo de R${(self.saldo_aleatorio - valor_a_ser_sacado) + valor_a_ser_depositado}\033[m')
+                print('\033[1;30mObrigado por frequentar nosso banco!!\033[m')
+                print('\033[1;31mDesligando...\033[m')
+                exit()
+
+
+
+    def deposito(self):
+        self.numero_da_conta  = int(input('\033[1;30mDigite o número da sua conta: \033[m'))
+        while self.numero_da_conta > 999999:
+            print('\033[1;31mO número da sua conta não pode ter mais de 6 dígitos.\033[m')
+            self.deposito()
+            if self.numero_da_conta < 999999:
+                break
+
+
+        try:
+            self.nome_do_correntista = input('\033[1;30mDigite o nome do Correntista:\033[m ')
+        except ValueError:
+            self.deposito()
+
+        depositar = input(f'\033[1;30mConfirma o depósito em nome do {self.nome_do_correntista}? [S/N]\033[m').strip()
+
+        if depositar in 'sS':
+            print(f'\033[1;30mVocê possui um saldo de R${self.saldo}\033[m')
+            try:
+                 valor_do_deposito = float(input('\033[1;30mQual valor você Gostaria de depositar? \033[m'))
+            except ValueError:
+                valor_do_deposito = float(input('\033[1;31mDigite apenas números\033[m, \033[1;30mQual valor você gostaria de depositar ?\033[m '))
+            print(f'\033[1;30mAgora você possui um saldo de R${self.saldo + valor_do_deposito}\033[m')
+            operacao_extra_nodeposito = input('\033[1;30mGostaria de fazer mais alguma operação ? [Saque/N]\033[m').strip().upper()
+            if operacao_extra_nodeposito == 'N':
+                print('\033[1;30mObrigado por frequentar nosso banco!!\033[m')
+            elif operacao_extra_nodeposito == 'SAQUE':
+                print('-' * 40)
+                print('{:^40}'.format('SAQUE'))
+                saque_no_deposito = int(input(f'\033[1;30mVocê possui um saldo de R${self.saldo + valor_do_deposito}, Qual valor gostaria de sacar?\033[m'))
+                if (self.saldo + valor_do_deposito) < saque_no_deposito:
+                    print('\033[1;31mSaldo insuficiente.\033[m')
+                elif (self.saldo + valor_do_deposito) >= saque_no_deposito:
+                    print(f'\033[1;30mVocê sacou um valor de R${saque_no_deposito}, Ficando no saldo de {(self.saldo + valor_do_deposito) - saque_no_deposito}\033[m')
+                    print('\033[1;30mImprimindo as notas...\033[m')
+                    sleep(3)
+                    print('\033[1;30mObrigado por frequentar nosso banco!\033[m')
+                    print('\033[1;31mDesligando...\033[m')
+                    sleep(5)
+                    exit()
+
+
+    def Iniciar(self):
+        print('-=' * 25)
+        print('{:^50}'.format('\033[1;34mBANCO PD\033[m'))
+        operacao_do_cliente = input('\033[1;30mQual operação você deseja realizar hoje? [SAQUE/DEPOSITO]\033[m ').strip().upper()
+        if operacao_do_cliente == 'SAQUE':
+            self.saque()
+        elif operacao_do_cliente in 'DEPOSITODEPÓSITO':
+            self.deposito()
+        else:
+            print('\033[1;30mObrigado por frequentar nosso banco!!')
+            print('\033[1;31mDesligando...')
+            sleep(5)
+            exit()
+
+
+
+
+conta = ContaCorrente()
+conta.Iniciar()
